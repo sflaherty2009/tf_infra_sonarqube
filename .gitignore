@@ -1,0 +1,12 @@
+.DS_Store
+example.tf
+terraform.tfplan
+tfplan
+terraform.tfstate
+*.tfstate
+.terraform/
+*~
+.*.swp
+
+lock.json
+terraform-provider-azurerm*
