@@ -46,6 +46,30 @@ resource "azurerm_lb_rule" "static" {
   frontend_ip_configuration_name = "loadBalancerFrontEnd"
 }
 
+resource "azurerm_lb_probe" "static2" {
+  resource_group_name = "${azurerm_resource_group.rg_static.name}"
+  loadbalancer_id     = "${azurerm_lb.static.id}"
+  name                = "lbprobe2"
+  protocol            = "Http"
+  port                = 8081
+  request_path        = "/"
+  interval_in_seconds = 120
+  number_of_probes    = 2
+}
+
+resource "azurerm_lb_rule" "static2" {
+  resource_group_name            = "${azurerm_resource_group.rg_static.name}"
+  loadbalancer_id                = "${azurerm_lb.static.id}"
+  probe_id                       = "${azurerm_lb_probe.static2.id}"
+  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.static.id}"
+  name                           = "lbrule2"
+  protocol                       = "Tcp"
+  frontend_port                  = 8081
+  backend_port                   = 8081
+  idle_timeout_in_minutes        = 15
+  frontend_ip_configuration_name = "loadBalancerFrontEnd"
+}
+
 resource "azurerm_storage_account" "static" {
   name                     = "sqbstatics${terraform.workspace}"
   resource_group_name      = "${azurerm_resource_group.rg_static.name}"
