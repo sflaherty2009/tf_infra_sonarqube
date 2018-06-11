@@ -65,6 +65,20 @@ resource "azurerm_virtual_machine" "sonarqube" {
   }
 }
 
+module "sonarqube_backup_vm" {
+  source                          = "git::https://bitbucket.org/trekbikes/dvo_module_backup_vm.git"
+
+  recovery_vault_rg               = "${lookup(var.sonarqube_recovery_vault_rg,terraform.workspace)}"
+  recovery_vault_name             = "${lookup(var.sonarqube_recovery_vault_name,terraform.workspace)}"
+  virtual_machines_resource_group = "${azurerm_resource_group.rg.name}"
+  virtual_machines_list           = "${azurerm_virtual_machine.sonarqube.name}"
+  backup_policy                   = "TrekDailyBackupPolicy"
+
+  depends_on                      = [
+    "${azurerm_virtual_machine.sonarqube.id}"
+  ]
+}
+
 resource "azurerm_virtual_machine_extension" "sonarqube" {
   name                       = "ChefClient"
   location                   = "${azurerm_resource_group.rg.location}"

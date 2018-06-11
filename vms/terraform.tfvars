@@ -61,3 +61,15 @@ sonarqube_private_ips = {
   "ss"      = "10.15.128.70"
   "prod"    = "10.16.128.70"
 }
+
+sonarqube_recovery_vault_rg = {
+  "default" = "AZ-RG-RV-Dev"
+  "ss"      = "AZ-RG-RV-Dev"
+  "prod"    = "AZ-RG-RV-Prd"
+}
+
+sonarqube_recovery_vault_name = {
+  "default" = "AZ-RV-Dev"
+  "ss"      = "AZ-RV-Dev"
+  "prod"    = "AZ-RV-Prd"
+}

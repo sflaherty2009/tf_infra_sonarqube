@@ -121,3 +121,13 @@ variable "sonarqube_private_ips" {
   type        = "map"
   description = "Map of full static private IP addresses to use. Map an IP to each workspace."
 }
+
+variable "sonarqube_recovery_vault_rg" {
+  type        = "map"
+  description = "Map of resource groups. Map appropriate recovery vault RG to each environment."
+}
+
+variable "sonarqube_recovery_vault_name" {
+  type        = "map"
+  description = "Map of resource groups names. Map appropriate recovery vault name to each environment."
+}
