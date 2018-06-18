@@ -16,9 +16,5 @@ vnets = {
   "prod"="AZ-VN-EastUS2-02"
 }
 
-tenant_id 		        = "9dcd6c72-99eb-423d-b4d9-794d81eef415"
-client_id 		        = "d9a96123-f00d-45ff-be1c-5591347003b1"
-client_secret 		    = "4U89CIH/FpXV2b1vcQJTBvJI5myZOaKd7w3oA6tR20k="
-
 location              = "East US 2"
 resource_group_name   = "AZ-RG-SonarQube-static"

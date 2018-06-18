@@ -2,12 +2,10 @@
 example.tf
 terraform.tfplan
 tfplan
-terraform.tfstate
+terraform.tfstate*
 *.tfstate
 .terraform/
 *~
 .*.swp
-sonarqube_secret
+secrets/
 
-lock.json
-terraform-provider-azurerm*

@@ -1,3 +1,8 @@
+# 1.1.0
+**Date: 6/18/2018**
+
+* Removed secrets from project files.
+
 # 1.0.1
 **Date: 5/7/2018**
 
