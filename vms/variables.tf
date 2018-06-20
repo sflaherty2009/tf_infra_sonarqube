@@ -4,7 +4,6 @@ terraform {
     container_name       = "environments"
     resource_group_name  = "dvo_terraform"
     key                  = "sonarqube/vms/terraform.tfstate"
-    access_key           = "tPLgDxuAjzeFu32JO5DwD6eh53+TrKyQ+fgohBmvFlH12WzU9PaDM64oNAtQYxk5Pd/m78J0yhPgOC5cja+tVA=="
   }
 }
 
@@ -17,15 +16,11 @@ data "terraform_remote_state" "static" {
     container_name       = "environments"
     resource_group_name  = "dvo_terraform"
     key                  = "sonarqube/static/terraform.tfstate"
-    access_key           = "tPLgDxuAjzeFu32JO5DwD6eh53+TrKyQ+fgohBmvFlH12WzU9PaDM64oNAtQYxk5Pd/m78J0yhPgOC5cja+tVA=="
   }
 }
 
 provider "azurerm" {
   subscription_id = "${lookup(var.subscription_ids,terraform.workspace)}"
-  client_id       = "${var.client_id}"
-  client_secret   = "${var.client_secret}"
-  tenant_id       = "${var.tenant_id}"
 }
 
 locals {
@@ -34,6 +29,10 @@ locals {
   sonarqube_computer_name   = "${lookup(var.sonarqube_computer_names,terraform.workspace)}"
   sonarqube_vm_size         = "${lookup(var.sonarqube_vm_sizes,terraform.workspace)}"
   sonarqube_private_ip    = "${lookup(var.sonarqube_private_ips,terraform.workspace)}"
+
+  admin_credentials = "${split("\n",file("${path.module}/secrets/admin_credentials"))}"
+  admin_user = "${local.admin_credentials[0]}"
+  admin_password = "${local.admin_credentials[1]}"
 }
 
 variable "subscription_ids" {
@@ -46,32 +45,12 @@ variable "vnets" {
   description = "Map of virtual networks to use. Map a vnet to each workspace."
 }
 
-variable "client_id" {
-  description = "Enter Client ID for Application created in Azure AD."
-}
-
-variable "client_secret" {
-  description = "Enter Client secret for Application in Azure AD."
-}
-
-variable "tenant_id" {
-  description = "Enter Tenant ID / Directory ID of your Azure AD. Run Get-AzureSubscription to know your Tenant ID."
-}
-
 variable "location" {
   description = "The default Azure region for the resource provisioning."
 }
 
 variable "resource_group_name" {
   description = "Resource group name that will contain various resources."
-}
-
-variable "admin_user" {
-  description = "Enter admin username to SSH into Linux VM."
-}
-
-variable "admin_password" {
-  description = "Enter admin password to SSH into VM."
 }
 
 variable "chef_server_url" {

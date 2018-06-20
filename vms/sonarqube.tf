@@ -51,8 +51,8 @@ resource "azurerm_virtual_machine" "sonarqube" {
 
   os_profile {
     computer_name  = "${local.sonarqube_computer_name}"
-    admin_username = "${var.admin_user}"
-    admin_password = "${var.admin_password}"
+    admin_username = "${local.admin_user}"
+    admin_password = "${local.admin_password}"
   }
 
   boot_diagnostics {
@@ -128,8 +128,8 @@ resource "azurerm_virtual_machine_extension" "sonarqube" {
 
   protected_settings = <<SETTINGS
   {
-    "validation_key": "${file("keys/validation.pem")}",
-    "secret": "${file("keys/sonarqube_secret")}"
+    "validation_key": "${file("${path.module}/secrets/validation.pem")}",
+    "secret": "${file("${path.module}/secrets/sonarqube_secret")}"
   }
   SETTINGS
 }
