@@ -3,6 +3,13 @@ resource "azurerm_resource_group" "rg_static" {
   location = "${var.location}"
 }
 
+resource "azurerm_management_lock" "sonarqube_static_lock" {
+  name       = "DoNotDelete"
+  scope      = "${azurerm_resource_group.rg_static.id}"
+  lock_level = "CanNotDelete"
+  notes      = "Implemented as part of DVO-3231"
+}
+
 resource "azurerm_lb" "static" {
   name                = "AZ-LB-SonarQube-private"
   location            = "${var.location}"
@@ -79,13 +86,13 @@ resource "azurerm_storage_account" "static" {
 }
 
 resource "azurerm_storage_share" "static_data" {
-  name                  = "data"
-  resource_group_name   = "${azurerm_resource_group.rg_static.name}"
-  storage_account_name  = "${azurerm_storage_account.static.name}"
+  name                 = "data"
+  resource_group_name  = "${azurerm_resource_group.rg_static.name}"
+  storage_account_name = "${azurerm_storage_account.static.name}"
 }
 
 resource "azurerm_storage_share" "static_archive" {
-  name                  = "archive"
-  resource_group_name   = "${azurerm_resource_group.rg_static.name}"
-  storage_account_name  = "${azurerm_storage_account.static.name}"
+  name                 = "archive"
+  resource_group_name  = "${azurerm_resource_group.rg_static.name}"
+  storage_account_name = "${azurerm_storage_account.static.name}"
 }
