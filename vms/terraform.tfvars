@@ -2,7 +2,7 @@ location = "East US 2"
 
 resource_group_name = "AZ-RG-SonarQube"
 
-chef_server_url = "https://10.16.192.4/organizations/trek"
+chef_server_url = "https://10.16.192.4/organizations/org"
 
 chef_environment = {
   "default" = "staging"
@@ -10,7 +10,7 @@ chef_environment = {
   "prod"    = "production"
 }
 
-chef_user_name = "trek-validator"
+chef_user_name = "validator"
 
 lin_image_publisher = "OpenLogic"
 

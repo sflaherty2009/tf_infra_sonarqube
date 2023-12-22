@@ -11,7 +11,7 @@ data "terraform_remote_state" "static" {
   backend   = "azurerm"
   workspace = "${terraform.workspace}"
 
-  config {
+  config = {
     storage_account_name = "terraformlock"
     container_name       = "environments"
     resource_group_name  = "dvo_terraform"
@@ -19,8 +19,12 @@ data "terraform_remote_state" "static" {
   }
 }
 
-provider "azurerm" {
-  subscription_id = "${lookup(var.subscription_ids,terraform.workspace)}"
+terraform {
+  required_providers {
+      azurerm = {
+        subscription_id = "${lookup(var.subscription_id,terraform.workspace)}"
+      }
+  }
 }
 
 locals {

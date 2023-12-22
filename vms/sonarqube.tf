@@ -8,7 +8,7 @@ resource "azurerm_network_interface" "sonarqube" {
     subnet_id                               = "${local.vm_subnet_id}"
     private_ip_address_allocation           = "static"
     private_ip_address                      = "${local.sonarqube_private_ip}"
-    load_balancer_backend_address_pools_ids = ["${data.terraform_remote_state.static.backendAddressPoolId}"]
+    # load_balancer_backend_address_pools_ids = ["${data.terraform_remote_state.static.backendAddressPoolId}"]
   }
 }
 
@@ -66,13 +66,13 @@ resource "azurerm_virtual_machine" "sonarqube" {
 }
 
 module "sonarqube_backup_vm" {
-  source                          = "git::https://bitbucket.org/trekbikes/dvo_module_backup_vm.git"
+  source                          = "git::https://bitbucket.org/module_backup_vm.git"
 
   recovery_vault_rg               = "${lookup(var.sonarqube_recovery_vault_rg,terraform.workspace)}"
   recovery_vault_name             = "${lookup(var.sonarqube_recovery_vault_name,terraform.workspace)}"
   virtual_machines_resource_group = "${azurerm_resource_group.rg.name}"
   virtual_machines_list           = "${azurerm_virtual_machine.sonarqube.name}"
-  backup_policy                   = "TrekDailyBackupPolicy"
+  backup_policy                   = "DailyBackupPolicy"
 
   depends_on                      = [
     "${azurerm_virtual_machine.sonarqube.id}"
@@ -81,9 +81,7 @@ module "sonarqube_backup_vm" {
 
 resource "azurerm_virtual_machine_extension" "sonarqube" {
   name                       = "ChefClient"
-  location                   = "${azurerm_resource_group.rg.location}"
-  resource_group_name        = "${azurerm_resource_group.rg.name}"
-  virtual_machine_name       = "${azurerm_virtual_machine.sonarqube.name}"
+  virtual_machine_id       = "${azurerm_virtual_machine.sonarqube.id}"
   publisher                  = "Chef.Bootstrap.WindowsAzure"
   type                       = "LinuxChefClient"
   type_handler_version       = "1210.12"

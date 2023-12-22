@@ -24,13 +24,11 @@ resource "azurerm_lb" "static" {
 }
 
 resource "azurerm_lb_backend_address_pool" "static" {
-  resource_group_name = "${azurerm_resource_group.rg_static.name}"
   loadbalancer_id     = "${azurerm_lb.static.id}"
   name                = "BackEndAddressPool"
 }
 
 resource "azurerm_lb_probe" "static" {
-  resource_group_name = "${azurerm_resource_group.rg_static.name}"
   loadbalancer_id     = "${azurerm_lb.static.id}"
   name                = "lbprobe"
   protocol            = "Http"
@@ -41,10 +39,9 @@ resource "azurerm_lb_probe" "static" {
 }
 
 resource "azurerm_lb_rule" "static" {
-  resource_group_name            = "${azurerm_resource_group.rg_static.name}"
   loadbalancer_id                = "${azurerm_lb.static.id}"
   probe_id                       = "${azurerm_lb_probe.static.id}"
-  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.static.id}"
+  backend_address_pool_ids       = "${azurerm_lb_backend_address_pool.static.id}"
   name                           = "lbrule"
   protocol                       = "Tcp"
   frontend_port                  = 9000
@@ -54,7 +51,6 @@ resource "azurerm_lb_rule" "static" {
 }
 
 resource "azurerm_lb_probe" "static2" {
-  resource_group_name = "${azurerm_resource_group.rg_static.name}"
   loadbalancer_id     = "${azurerm_lb.static.id}"
   name                = "lbprobe2"
   protocol            = "Http"
@@ -65,10 +61,9 @@ resource "azurerm_lb_probe" "static2" {
 }
 
 resource "azurerm_lb_rule" "static2" {
-  resource_group_name            = "${azurerm_resource_group.rg_static.name}"
   loadbalancer_id                = "${azurerm_lb.static.id}"
   probe_id                       = "${azurerm_lb_probe.static2.id}"
-  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.static.id}"
+  backend_address_pool_ids        = "${azurerm_lb_backend_address_pool.static.id}"
   name                           = "lbrule2"
   protocol                       = "Tcp"
   frontend_port                  = 8081
@@ -87,12 +82,12 @@ resource "azurerm_storage_account" "static" {
 
 resource "azurerm_storage_share" "static_data" {
   name                 = "data"
-  resource_group_name  = "${azurerm_resource_group.rg_static.name}"
+  quota                = 50
   storage_account_name = "${azurerm_storage_account.static.name}"
 }
 
 resource "azurerm_storage_share" "static_archive" {
   name                 = "archive"
-  resource_group_name  = "${azurerm_resource_group.rg_static.name}"
+  quota                = 50
   storage_account_name = "${azurerm_storage_account.static.name}"
 }

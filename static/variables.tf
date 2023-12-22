@@ -7,8 +7,12 @@ terraform {
   }
 }
 
-provider "azurerm" {
-  subscription_id = "${lookup(var.subscription_ids,terraform.workspace)}"
+terraform {
+  required_providers {
+      azurerm = {
+        subscription_id = "${lookup(var.subscription_id,terraform.workspace)}"
+      }
+  }
 }
 
 variable "subscription_ids" {
