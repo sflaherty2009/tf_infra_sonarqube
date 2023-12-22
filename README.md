@@ -30,6 +30,13 @@ This Terraform configuration is designed for setting up a SonarQube environment 
 ### `storage_account.tf`
 - Sets up storage accounts and containers for SonarQube in Azure.
 
+## Folders 
+### `static`
+- This Terraform module provisions the SonarQube static resources such as the load balancer and shared storage account.
+
+### `vms`
+- This Terraform module provisions the SonarQube virtual machines.
+
 ## Prerequisites
 - Azure account with required permissions.
 - Terraform installed and configured on your system.
